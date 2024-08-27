@@ -152,6 +152,7 @@ class Settings(BaseSettings):
     REACT_APP_API_URL:str
     REPLICATE_API_TOKEN: Optional[str] = None
     LLAMA_CLOUD_API_KEY: Optional[str] = None
+    ANTHROPIC_API_KEY: Optional[str] = None
     # Log
     LOGGING_LEVEL: str = 'INFO'
 
