@@ -30,7 +30,8 @@ try:
     openai_service =  ai_services_config.get("OpenAI", {})
     together_ai_service = ai_services_config.get("Together", {})
     replicate_ai_service = ai_services_config.get("Replicate", {})
-
+    bedrock_ai_service = ai_services_config.get("Bedrock", {})
+    anthropic_ai_service = ai_services_config.get("Anthropic", {})
 
     # List of all AI services
     all_ai_services = list(ai_services_config.keys())  
@@ -127,6 +128,27 @@ class ReplicateModelNames(Enum):
     meta_llama_3_70b_instruct = replicate_ai_service.get("chat_models", {}).get("meta_llama_3_70b_instruct", {}).get("model_name", None)
     # Add more models as needed
 
+class AnthropicModelNames(Enum):
+    """
+    Enum representing different model names for Anthropics, each identified by a unique model string.
+    """
+    claude_3_opus_20240229 = anthropic_ai_service.get("chat_models", {}).get("claude-3-opus-20240229", {}).get("model_name", None)
+    claude_3_sonnet_20240229 = anthropic_ai_service.get("chat_models", {}).get("claude-3-sonnet-20240229", {}).get("model_name", None)
+    claude_3_haiku_20240307 = anthropic_ai_service.get("chat_models", {}).get("claude-3-haiku-20240307", {}).get("model_name", None)
+    # Add more models as needed
+
+class BedrockModelNames(Enum):
+    """
+    Enum representing different model names for Bedrock, each identified by a unique model string.
+    """
+    anthropic_claude_3_5_sonnet_20240620_v1_0 = bedrock_ai_service.get("chat_models", {}).get("anthropic.claude-3-5-sonnet-20240620-v1:0", {}).get("model_name", None)
+    meta_llama3_8b_instruct_v1_0 = bedrock_ai_service.get("chat_models", {}).get("meta.llama3-8b-instruct-v1:0", {}).get("model_name", None)
+    meta_llama3_70b_instruct_v1_0 = bedrock_ai_service.get("chat_models", {}).get("meta.llama3-70b-instruct-v1:0", {}).get("model_name", None)
+    mistral_mistral_7b_instruct_v0_2 = bedrock_ai_service.get("chat_models", {}).get("mistral.mistral-7b-instruct-v0:2", {}).get("model_name", None)
+    mistral_mixtral_8x7b_instruct_v0_1 = bedrock_ai_service.get("chat_models", {}).get("mistral.mixtral-8x7b-instruct-v0:1", {}).get("model_name", None)
+    # Add more models as needed
+
+
 logger.info(f"NemoModelnames: {NemoModelNames.__members__}")
 logger.info(f"AzureOpenAIModelEngines:  {AzureOpenAIModelEngines.__members__}")
 logger.info(f"AzureOpenAIModelNames:  {AzureOpenAIModelNames.__members__}")
@@ -155,6 +177,11 @@ class Settings(BaseSettings):
     # Log
     LOGGING_LEVEL: str = 'INFO'
     ANTHROPIC_API_KEY: Optional[str] = None
+    AWS_ACCESS_KEY_ID: Optional[str] = None
+    AWS_SECRET_ACCESS_KEY: Optional[str] = None
+    AWS_SESSION_TOKEN: Optional[str] = None
+    AWS_REGION: Optional[str] = None
+
     # def chat_file_temp_file_directory(self, user_id: int, chat_id: int) -> str:
     #     return os.path.join(f'../tmp/{user_id}/{chat_id}/raw_docs/')
 

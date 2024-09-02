@@ -14,8 +14,16 @@ from llama_index.llms.replicate import Replicate
 from llama_index.llms.together import TogetherLLM
 from llama_index.llms.openai import OpenAI
 from library.aggrag.core.config import ai_services_config
-from library.aggrag.core.config import settings, AzureOpenAIModelNames, AzureOpenAIModelEngines, OpenAIModelNames
+from library.aggrag.core.config import (
+    settings,
+    AzureOpenAIModelNames,
+    AzureOpenAIModelEngines,
+    OpenAIModelNames,
+    BedrockModelNames,
+    AnthropicModelNames,
+)
 from llama_index.llms.anthropic import Anthropic
+from llama_index.llms.bedrock import Bedrock
 
 
 rag_temperature = 0.1
@@ -52,14 +60,12 @@ class ReplicateAIService:
         )
 
 
-
 class TogetherAIService:
     def __init__(self, model=None, embed_model=None):
         self.llm = TogetherLLM(
             model=model or TogetherLLMModelNames.mixtral_8x7b_instruct.value,
             api_key=settings.TOGETHER_API_KEY,
         )
-
 
 
 class OpenAIService:
@@ -75,12 +81,21 @@ class OpenAIService:
             api_key=api_key or settings.OPENAI_API_KEY)
 
 
-
 class AnthropicAIService:
     def __init__(self, model=None, embed_model=None):
         self.llm = Anthropic(
-            model=model or "claude-3-opus-20240229",
+            model=model or AnthropicModelNames.claude_3_sonnet_20240229.value,
             api_key=settings.ANTHROPIC_API_KEY
+        )
+
+class BedrockAIService:
+    def __init__(self, model=None, embed_model=None):
+        self.llm = Bedrock(
+            model=model or BedrockModelNames.meta_llama3_8b_instruct_v1_0.value,
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            aws_session_token=settings.AWS_SESSION_TOKEN,
+            region_name=settings.AWS_REGION,
         )
 
 class AIServiceFactory:
@@ -106,5 +121,7 @@ class AIServiceFactory:
             return OpenAIService(model=llm_model, embed_model=embed_model)
         elif ai_service == "Anthropic":
             return AnthropicAIService(model=llm_model, embed_model=embed_model)
+        elif ai_service =="Bedrock":
+            return BedrockAIService(model=llm_model, embed_model=embed_model)
         else:
             raise ValueError(f"Unsupported AI service: {ai_service}")
