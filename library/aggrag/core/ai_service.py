@@ -16,6 +16,8 @@ from llama_index.llms.openai import OpenAI
 from library.aggrag.core.config import ai_services_config
 from library.aggrag.core.config import settings, AzureOpenAIModelNames, AzureOpenAIModelEngines, OpenAIModelNames
 from llama_index.llms.anthropic import Anthropic
+import logging
+logger = logging.getLogger(__name__)
 
 
 rag_temperature = 0.1
@@ -49,7 +51,9 @@ class AzureAIService:
             api_version = api_version or settings.OPENAI_API_VERSION
         )
 
-        import pdb; pdb.set_trace()
+        logger.info(f"llm_model :  {self.llm}")
+        logger.info(f"embed_model : {self.embed_model}")
+
 class ReplicateAIService:
     def __init__(self, model=None, embed_model=None):
 
@@ -58,6 +62,7 @@ class ReplicateAIService:
             temperature=0.1,
             # context_window=32,
         )
+        logger.info(f"llm_model :  {self.llm}")
 
 
 
@@ -68,6 +73,7 @@ class TogetherAIService:
             api_key=settings.TOGETHER_API_KEY,
         )
 
+        logger.info(f"llm_model :  {self.llm}")
 
 
 class OpenAIService:
@@ -82,6 +88,8 @@ class OpenAIService:
             model = embed_model or OpenAIModelNames.text_embedding_ada_002.value,
             api_key=api_key or settings.OPENAI_API_KEY)
 
+        logger.info(f"llm_model :  {self.llm}")
+        logger.info(f"embed_model : {self.embed_model}")
 
 
 class AnthropicAIService:
@@ -90,6 +98,7 @@ class AnthropicAIService:
             model=model or "claude-3-opus-20240229",
             api_key=settings.ANTHROPIC_API_KEY
         )
+        logger.info(f"llm_model :  {self.llm}")
 
 class AIServiceFactory:
     @staticmethod

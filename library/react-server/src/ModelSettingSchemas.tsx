@@ -2233,13 +2233,8 @@ const CommonRagSettings = {
       then: {
         properties: {
           llm_model: {
-            default: "gpt-35-turbo-16k",
-            enum: [
-              "gpt-4",
-              "gpt-35-turbo",
-              "gpt-4-turbo",
-              "gpt-4o",
-            ],
+            default: "gpt-4",
+            enum: ["gpt-4", "gpt-35-turbo", "gpt-4-turbo", "gpt-4o"],
             title: "LLM Model",
             type: "string",
           },
