@@ -35,8 +35,8 @@ class AzureAIService:
             raise
 
         self.llm = AzureOpenAI(
-            model=model or AzureOpenAIModelNames.gpt_35_turbo.value,
-            deployment_name=chat_model_deployment_name or AzureOpenAIModelEngines.gpt_35_turbo.value,
+            model=model,
+            deployment_name=chat_model_deployment_name,
             api_key=api_key or settings.AZURE_OPENAI_KEY,
             azure_endpoint=azure_endpoint or settings.AZURE_API_BASE,
             api_version=api_version or settings.OPENAI_API_VERSION,
@@ -44,15 +44,13 @@ class AzureAIService:
         )
     
         self.embed_model = AzureOpenAIEmbedding(
-            model = embed_model or AzureOpenAIModelNames.text_embedding_ada_002.value,
-            deployment_name = embed_model_deployment_name or AzureOpenAIModelEngines.text_embedding_ada_002.value,
+            model = embed_model,
+            deployment_name = embed_model_deployment_name,
             api_key=api_key or settings.AZURE_OPENAI_KEY,
             azure_endpoint = azure_endpoint or settings.AZURE_API_BASE,
             api_version = api_version or settings.OPENAI_API_VERSION
         )
 
-        logger.info(f"llm_model :  {self.llm}")
-        logger.info(f"embed_model : {self.embed_model}")
 
 class ReplicateAIService:
     def __init__(self, model=None, embed_model=None):
@@ -62,7 +60,6 @@ class ReplicateAIService:
             temperature=0.1,
             # context_window=32,
         )
-        logger.info(f"llm_model :  {self.llm}")
 
 
 
@@ -73,14 +70,21 @@ class TogetherAIService:
             api_key=settings.TOGETHER_API_KEY,
         )
 
-        logger.info(f"llm_model :  {self.llm}")
 
 
 class OpenAIService:
     def __init__(self, model=None, deployment_name=None, api_key=None, azure_endpoint=None, api_version=None, embed_model=None):
 
+        try:
+            model = ai_services_config["OpenAI"]["chat_models"].get(model or OpenAIModelNames.gpt_35_turbo.value).get("model_name", None)
+            embed_model = ai_services_config["OpenAI"]["embed_models"].get(embed_model or OpenAIModelNames.text_embedding_ada_002.value).get("model_name", None)
+        except Exception as e:
+            print(f"Error accessing model information from AZURE_SERVICE_CONFIG: {e}")
+            raise
+
+
         self.llm = OpenAI(
-            model=model or OpenAIModelNames.gpt_4_turbo.value,
+            model=model or OpenAIModelNames.gpt_35_turbo.value,
             api_key=settings.OPENAI_API_KEY,
         )
         
@@ -88,8 +92,6 @@ class OpenAIService:
             model = embed_model or OpenAIModelNames.text_embedding_ada_002.value,
             api_key=api_key or settings.OPENAI_API_KEY)
 
-        logger.info(f"llm_model :  {self.llm}")
-        logger.info(f"embed_model : {self.embed_model}")
 
 
 class AnthropicAIService:
@@ -98,7 +100,6 @@ class AnthropicAIService:
             model=model or "claude-3-opus-20240229",
             api_key=settings.ANTHROPIC_API_KEY
         )
-        logger.info(f"llm_model :  {self.llm}")
 
 class AIServiceFactory:
     @staticmethod
