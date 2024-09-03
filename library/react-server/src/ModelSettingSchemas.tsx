@@ -2235,10 +2235,9 @@ const CommonRagSettings = {
           llm_model: {
             default: "gpt-35-turbo-16k",
             enum: [
-              "gpt-35-turbo-16k",
-              "gpt-35-turbo",
               "gpt-4",
-              "gpt-4-32k",
+              "gpt-35-turbo",
+              "gpt-4-turbo",
               "gpt-4o",
             ],
             title: "LLM Model",

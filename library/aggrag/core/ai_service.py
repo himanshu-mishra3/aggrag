@@ -23,10 +23,18 @@ rag_temperature = 0.1
 
 class AzureAIService:
     def __init__(self, model=None, deployment_name=None, api_key=None, azure_endpoint=None, api_version=None, embed_model=None):
+        try:
+            model = ai_services_config["AzureOpenAI"]["chat_models"].get(model or AzureOpenAIModelNames.gpt_35_turbo.value).get("model_name", None)
+            embed_model = ai_services_config["AzureOpenAI"]["embed_models"].get(embed_model or AzureOpenAIModelNames.text_embedding_ada_002.value).get("model_name", None)
+            chat_model_deployment_name = ai_services_config["AzureOpenAI"]["chat_models"].get(model).get("deployment_name", None)
+            embed_model_deployment_name = ai_services_config["AzureOpenAI"]["embed_models"].get(embed_model).get("deployment_name", None)
+        except Exception as e:
+            print(f"Error accessing model information from AZURE_SERVICE_CONFIG: {e}")
+            raise
 
         self.llm = AzureOpenAI(
-            model=model or AzureOpenAIModelNames.gpt_35_turbo_16k.value,
-            deployment_name=deployment_name or AzureOpenAIModelEngines.gpt_35_turbo_16k.value,
+            model=model or AzureOpenAIModelNames.gpt_35_turbo.value,
+            deployment_name=chat_model_deployment_name or AzureOpenAIModelEngines.gpt_35_turbo.value,
             api_key=api_key or settings.AZURE_OPENAI_KEY,
             azure_endpoint=azure_endpoint or settings.AZURE_API_BASE,
             api_version=api_version or settings.OPENAI_API_VERSION,
@@ -35,13 +43,13 @@ class AzureAIService:
     
         self.embed_model = AzureOpenAIEmbedding(
             model = embed_model or AzureOpenAIModelNames.text_embedding_ada_002.value,
-            deployment_name = deployment_name or AzureOpenAIModelEngines.text_embedding_ada_002.value,
+            deployment_name = embed_model_deployment_name or AzureOpenAIModelEngines.text_embedding_ada_002.value,
             api_key=api_key or settings.AZURE_OPENAI_KEY,
             azure_endpoint = azure_endpoint or settings.AZURE_API_BASE,
             api_version = api_version or settings.OPENAI_API_VERSION
         )
 
-
+        import pdb; pdb.set_trace()
 class ReplicateAIService:
     def __init__(self, model=None, embed_model=None):
 
