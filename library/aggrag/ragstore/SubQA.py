@@ -85,6 +85,10 @@ class SubQA:
         self.llm = llm
 
         self.embed_model = embed_model
+
+        logger.info(f"******** llm {self.llm}")
+        logger.info(f"******** embed_model {self.embed_model}")
+
         self.documents = None
         self.index_name =  subqa_rag_setting.index_name  # reusing the same index from Base RAG
         self.index = None

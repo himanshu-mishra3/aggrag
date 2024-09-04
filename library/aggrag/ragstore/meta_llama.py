@@ -114,8 +114,11 @@ class MetaLlama:
         self.metadata_json_schema= meta_llama_rag_setting.metadata_json_schema
 
         self.llm = llm
-
         self.embed_model = embed_model
+
+        logger.info(f"******** llm {self.llm}")
+        logger.info(f"******** embed_model {self.embed_model}")
+
         self.documents = None
         self.index_name = meta_llama_rag_setting.index_name or "meta_index"
         

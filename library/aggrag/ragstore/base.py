@@ -98,6 +98,9 @@ class Base:
         self.llm = llm
         self.embed_model = embed_model
 
+        logger.info(f"******** llm {self.llm}")
+        logger.info(f"******** embed_model {self.embed_model}")
+
         self.documents = None
         self.index_name = base_rag_setting.index_name or "base_index"
         

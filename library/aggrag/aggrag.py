@@ -63,19 +63,14 @@ class AggRAGBase:
             Returns:
                 RagStore: An instance of RagStore with the specified components initialized.
             """
+            import pdb; pdb.set_trace()
             return RagStore(
                 base=Base(
                     usecase_name=self.usecase_name,
                     iteration=self.iteration,
                     base_rag_setting=self.ragstore_settings.base_rag_setting if self.ragstore_settings.base_rag_setting else BaseRagSetting(),
-                    llm=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.base_rag_setting.ai_service,
-                            llm_model=self.ragstore_settings.base_rag_setting.llm_model,
-                        ).llm,
-                    embed_model=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.base_rag_setting.embed_ai_service,
-                            embed_model=self.ragstore_settings.base_rag_setting.embed_model,
-                        ).embed_model
+                    llm=AIServiceFactory.get_ai_service( service=self.ragstore_settings.base_rag_setting.ai_service, **self.ragstore_settings.base_rag_setting.model_dump()).llm,
+                    embed_model=AIServiceFactory.get_ai_service( service=self.ragstore_settings.base_rag_setting.embed_ai_service, **self.ragstore_settings.base_rag_setting.model_dump()).embed_model,
                 ) if ragstore_bool.base else None,
 
                 subqa=SubQA(
@@ -83,14 +78,8 @@ class AggRAGBase:
                     iteration=self.iteration,
                     DATA_DIR=self.DATA_DIR,
                     subqa_rag_setting=self.ragstore_settings.subqa_rag_setting if self.ragstore_settings.subqa_rag_setting else SubQARagSetting(),
-                    llm=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.subqa_rag_setting.ai_service,
-                            llm_model=self.ragstore_settings.subqa_rag_setting.llm_model,
-                        ).llm,
-                    embed_model=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.subqa_rag_setting.embed_ai_service,
-                            embed_model=self.ragstore_settings.subqa_rag_setting.embed_model,
-                        ).embed_model
+                    llm=AIServiceFactory.get_ai_service(**self.ragstore_settings.subqa_rag_setting.model_dump()).llm,
+                    embed_model=AIServiceFactory.get_ai_service(**self.ragstore_settings.subqa_rag_setting.model_dump()).embed_model,
                 ) if ragstore_bool.subqa else None,
 
                 raptor=Raptor(
@@ -98,14 +87,8 @@ class AggRAGBase:
                     iteration=self.iteration,
                     DATA_DIR=self.DATA_DIR,
                     raptor_rag_setting=self.ragstore_settings.raptor_rag_setting if self.ragstore_settings.raptor_rag_setting else RaptorRagSetting(),
-                    llm=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.raptor_rag_setting.ai_service,
-                            llm_model=self.ragstore_settings.raptor_rag_setting.llm_model,
-                        ).llm,
-                    embed_model=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.raptor_rag_setting.embed_ai_service,
-                            embed_model=self.ragstore_settings.raptor_rag_setting.embed_model,
-                        ).embed_model
+                    llm=AIServiceFactory.get_ai_service(**self.ragstore_settings.raptor_rag_setting.model_dump()).llm,
+                    embed_model=AIServiceFactory.get_ai_service(**self.ragstore_settings.raptor_rag_setting.model_dump()).embed_model,
                 ) if ragstore_bool.raptor else None,
 
                 meta_llama=MetaLlama(
@@ -113,14 +96,8 @@ class AggRAGBase:
                     iteration=self.iteration,
                     DATA_DIR=self.DATA_DIR,
                     meta_llama_rag_setting=self.ragstore_settings.meta_llama_rag_setting if self.ragstore_settings.meta_llama_rag_setting else MetaLlamaRagSetting(),
-                    llm=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.meta_llama_rag_setting.ai_service,
-                            llm_model=self.ragstore_settings.meta_llama_rag_setting.llm_model,
-                        ).llm,
-                    embed_model=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.meta_llama_rag_setting.embed_ai_service,
-                            embed_model=self.ragstore_settings.meta_llama_rag_setting.embed_model,
-                        ).embed_model                        
+                    llm=AIServiceFactory.get_ai_service(**self.ragstore_settings.meta_llama_rag_setting.model_dump()).llm,
+                    embed_model=AIServiceFactory.get_ai_service(**self.ragstore_settings.meta_llama_rag_setting.model_dump()).embed_model,
                 ) if ragstore_bool.meta_llama else None,
 
                 meta_lang=MetaLang(
@@ -128,14 +105,9 @@ class AggRAGBase:
                     iteration=self.iteration,
                     DATA_DIR=self.DATA_DIR,
                     meta_lang_rag_setting=self.ragstore_settings.meta_lang_rag_setting if self.ragstore_settings.meta_lang_rag_setting else MetaLangRagSetting(),
-                    llm=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.meta_lang_rag_setting.ai_service,
-                            llm_model=self.ragstore_settings.meta_lang_rag_setting.llm_model,
-                        ).llm,
-                    embed_model=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.meta_lang_rag_setting.embed_ai_service,
-                            embed_model=self.ragstore_settings.meta_lang_rag_setting.embed_model,
-                        ).embed_model  
+                    llm=AIServiceFactory.get_ai_service(**self.ragstore_settings.meta_lang_rag_setting.model_dump()).llm,
+                    embed_model=AIServiceFactory.get_ai_service(**self.ragstore_settings.meta_lang_rag_setting.model_dump()).embed_model,
+                    temperature=self.ragstore_settings.base_rag_setting.temperature
                 ) if ragstore_bool.meta_lang else None,
 
                 tableBase=TableBase(
@@ -143,14 +115,9 @@ class AggRAGBase:
                     iteration=self.iteration,
                     DATA_DIR=self.DATA_DIR,
                     tableBase_rag_setting=self.ragstore_settings.tableBase_rag_setting if self.ragstore_settings.tableBase_rag_setting else TableBaseRagSetting(),
-                    llm=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.tableBase_rag_setting.ai_service,
-                            llm_model=self.ragstore_settings.tableBase_rag_setting.llm_model,
-                        ).llm,
-                    embed_model=AIServiceFactory.get_ai_service(
-                            ai_service=self.ragstore_settings.tableBase_rag_setting.embed_ai_service,
-                            embed_model=self.ragstore_settings.tableBase_rag_setting.embed_model,
-                        ).embed_model  
+                    llm=AIServiceFactory.get_ai_service(**self.ragstore_settings.tableBase_rag_setting.model_dump()).llm,
+                    embed_model=AIServiceFactory.get_ai_service(**self.ragstore_settings.tableBase_rag_setting.model_dump()).embed_model,
+                    temperature=self.ragstore_settings.base_rag_setting.temperature
                 ) if ragstore_bool.tableBase else None,
 
             )

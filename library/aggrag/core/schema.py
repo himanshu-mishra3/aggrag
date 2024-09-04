@@ -54,20 +54,13 @@ class BaseRagSetting(BaseModel):
         if embed_model and embed_ai_service is None:
             raise ValueError(f"Please provide embed_ai_service as well while providing a embed_model or just opt out embed_model to use the default service and model")
 
-
-        expected_llm_models = [
-            model['model_name'] 
-            for model in ai_services_config.get(ai_service, {}).get('chat_models', {}).values()  # Access models in chat_models
-        ]
+        expected_llm_models = list(ai_services_config.get(ai_service, {}).get('chat_models', {}).keys())
 
         if llm_model and llm_model not in expected_llm_models:
             raise ValueError(f"Invalid model '{llm_model}' for ai_service '{ai_service}'. Expected one of {expected_llm_models}")
 
 
-        expected_embed_models = [
-            model_info['model_name'] 
-            for model_info in ai_services_config.get(embed_ai_service, {}).get('embed_models', {}).values()  # Access models in embed_models
-        ]
+        expected_embed_models = list(ai_services_config.get(ai_service, {}).get('embed_models', {}).keys())
 
 
         if embed_model and embed_model not in expected_embed_models:
