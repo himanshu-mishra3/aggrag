@@ -1,5 +1,5 @@
-from .base import Base
-from .SubQA import SubQA
+from .base_aggrag import Base
+from .subqa_aggrag import SubQA
 from .raptor import Raptor
 from .meta_llama import MetaLlama
 from .meta_lang import MetaLang
