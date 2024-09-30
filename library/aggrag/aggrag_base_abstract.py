@@ -8,7 +8,7 @@ class AggragBaseAbstract(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self, usecase_name: str, iteration: str, DATA_DIR: Optional[str] = None, upload_type: Optional[str] = None, base_rag_setting=None, llm=None, embed_model=None):
+    def __init__(self, usecase_name: str, iteration: str, DATA_DIR: Optional[str] = None, upload_type: Optional[str] = None, llm=None, embed_model=None):
         """
         Initializes a base configuration for RAG with given parameters, setting up directories and logging essential information.
         """
