@@ -3022,7 +3022,7 @@ const Meta_langRagSettings: ModelSettingsDict = {
         type: "string",
       },
       embed_ai_service: {
-        default: "AzureOpenAI",
+        default: "OpenAI",
         oneOf: [
           {
             const: "OpenAI",

@@ -49,12 +49,12 @@ class AggragBaseAbstract(abc.ABC):
         """
         pass
 
-    @abc.abstractmethod
-    async def astream_chat(self, query, chat_history=None, is_evaluate=False):
-        """
-        Asynchronously handles a streaming chat session, providing real-time responses to a continuous query stream.
-        """
-        pass
+    # @abc.abstractmethod
+    # async def astream_chat(self, query, chat_history=None, is_evaluate=False):
+    #     """
+    #     Asynchronously handles a streaming chat session, providing real-time responses to a continuous query stream.
+    #     """
+    #     pass
 
     # @abc.abstractmethod
     # async def run(self, query, chat_history=None, is_evaluate=False):
