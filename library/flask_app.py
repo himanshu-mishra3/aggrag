@@ -1754,6 +1754,13 @@ def RAGStoreChat():
         ragstore_settings=aggrag_ragstore_settings,
     )
 
+    try:
+        index_folder_list = os.listdir(f"{working_dir}{aggrag.BASE_DIR}/index/")
+        if not index_folder_list:
+            raise FileNotFoundError
+    except FileNotFoundError:
+        return jsonify({"error": "The index directory could not be found or accessed."}), 404
+
     working_dir = os.getcwd()
     print(f"current working dir: {working_dir} ")
     print(f"data dir: {aggrag.BASE_DIR} {aggrag.DATA_DIR} ")
