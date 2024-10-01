@@ -1758,8 +1758,8 @@ def RAGStoreChat():
         if not index_folder_list:
             raise FileNotFoundError
     except FileNotFoundError as e:
-        return jsonify({"error": f"The index directory could not be found or accessed. {e}"}), 404
-
+        logger.error(f"error: The index directory could not be found or accessed. {e}")
+        return jsonify({"error": f"The index directory could not be found or accessed."}), 404
     working_dir = os.getcwd()
     print(f"current working dir: {working_dir} ")
     print(f"data dir: {aggrag.BASE_DIR} {aggrag.DATA_DIR} ")
