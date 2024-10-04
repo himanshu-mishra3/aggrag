@@ -32,6 +32,7 @@ class AIServicesConfig(BaseModel):
     Together: Optional[AIServiceConfig] = None
     OpenAI: Optional[AIServiceConfig] = None
     Anthropic: Optional[AIServiceConfig] = None
+    Nemo: Optional[AIServiceConfig] = None
 
 
 try:
@@ -51,6 +52,7 @@ try:
     together_ai_service = ai_services_config.get("Together", {})
     replicate_ai_service = ai_services_config.get("Replicate", {})
     anthropic_ai_service = ai_services_config.get("Anthropic", {})
+    nemo_ai_service = ai_services_config.get("Nemo", {})
 
     # List of all AI services
     all_ai_services = list(ai_services_config.keys())  
@@ -157,6 +159,8 @@ class Settings(BaseSettings):
     REACT_APP_API_URL:str
     REPLICATE_API_TOKEN: Optional[str] = None
     LLAMA_CLOUD_API_KEY: Optional[str] = None
+    NEMO_API_KEY: Optional[str] = None
+
     # Log
     LOGGING_LEVEL: str = 'DEBUG'
     ANTHROPIC_API_KEY: Optional[str] = None

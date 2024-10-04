@@ -15,7 +15,7 @@ from llama_index.llms.replicate import Replicate
 from llama_index.llms.together import TogetherLLM
 from llama_index.llms.openai import OpenAI
 from library.aggrag.core.config import ai_services_config
-from library.aggrag.core.config import settings, AzureOpenAIModelNames, AzureOpenAIModelEngines, OpenAIModelNames, AnthropicModelNames
+from library.aggrag.core.config import settings, AzureOpenAIModelNames, AzureOpenAIModelEngines, OpenAIModelNames, AnthropicModelNames, NemoModelNames
 from llama_index.llms.anthropic import Anthropic
 
 
@@ -241,6 +241,67 @@ class AnthropicAIService:
             print(f"Error initializing LLM model: {e}")
             raise
 
+from llama_index.llms.nemo import NemoLLM
+from llama_index.embeddings.nemo import NemoEmbedding
+from library.aggrag.core.config import NemoModelNames
+
+class NemoAIService:
+    def initialize_llm_model(**kwargs):
+        try:
+            service_config = AI_SERVICES_CONFIG.Nemo
+            if not service_config:
+                raise ValueError("Nemo configuration not found in AI_SERVICES_CONFIG.")
+
+            llm_model = kwargs.get("llm_model")
+            if llm_model:
+                model_config = service_config.chat_models.get(llm_model)
+                if not model_config:
+                    raise ValueError(f"Configuration not found for LLM model '{llm_model}' in Nemo chat_models.")
+                model = model_config.model_name
+            else:
+                model = NemoModelNames.mixtral_8x7b.value
+
+            api_key = kwargs.get("api_key", settings.NEMO_API_KEY)
+            temperature = kwargs.get("temperature", rag_temperature)
+
+            llm = NemoLLM(
+                model=model,
+                api_key=api_key,
+                temperature=temperature,
+            )
+
+            return llm
+        except Exception as e:
+            print(f"Error initializing LLM model: {e}")
+            raise
+
+    def initialize_embed_model(**kwargs):
+        try:
+            service_config = AI_SERVICES_CONFIG.Nemo
+            if not service_config:
+                raise ValueError("Nemo configuration not found in AI_SERVICES_CONFIG.")
+
+            embed_model = kwargs.get("embed_model")
+            if embed_model:
+                model_config = service_config.embed_models.get(embed_model)
+                if not model_config:
+                    raise ValueError(f"Configuration not found for embedding model '{embed_model}' in Nemo embed_models.")
+                embed_model = model_config.model_name
+            else:
+                embed_model = NemoModelNames.nvolveqa_40k.value
+
+            api_key = kwargs.get("api_key", settings.NEMO_API_KEY)
+
+            embed_model = NemoEmbedding(
+                model=embed_model,
+                api_key=api_key,
+            )
+
+            return embed_model
+        except Exception as e:
+            print(f"Error initializing embedding model: {e}")
+            raise
+
 class AIServiceFactory:
 
     service_map = {
@@ -249,6 +310,7 @@ class AIServiceFactory:
         "Together": TogetherAIService,
         "OpenAI": OpenAIService,
         "Anthropic": AnthropicAIService,
+        "Nemo": NemoAIService
     }
 
     def create_llm_model(**kwargs):
